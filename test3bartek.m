@@ -1,10 +1,9 @@
 function [] = test3bartek()
 % Igor Januszkiewicz
 
-iters = 10;
+iters = 100;
 diffs = zeros(1,iters);
 accuracy = realmin;
-stopByCond = diffs;
 i = 1;
 
 while i <= iters
@@ -14,7 +13,7 @@ while i <= iters
         continue;
     end
     eig = min(eig2, eig1);
-    [eigbartek, ~, ~] = bartek(A, accuracy);
+    [eigbartek, ~, ~] = P2Z8_IJA_OdwMetPotegowa(A, accuracy);
     diffs(i) = abs(eig - eigbartek);
     i = i + 1;
 end

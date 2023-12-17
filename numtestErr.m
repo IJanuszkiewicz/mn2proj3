@@ -10,3 +10,6 @@ for i = 1:iters
 end
 
 end % function
+
+
+% zrobić testy dla macierzy clementa wilkinsona!!
