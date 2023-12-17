@@ -12,8 +12,8 @@ while i <= iters
     if abs(eig1 - eig2) < 1000*eps()
         continue;
     end
-    eig = min(eig2, eig1);
-    [eigbartek, ~, ~] = P2Z8_IJA_OdwMetPotegowa(A, accuracy);
+    eig = min(eig2, eig1, "ComparisonMethod", "abs");
+    eigbartek = P2Z08_IJA_OdwMetPotegowa(A, accuracy);
     diffs(i) = abs(eig - eigbartek);
     i = i + 1;
 end

@@ -1,4 +1,4 @@
-function [L, U, P, Q] = LU(A)
+function [L, U, P, Q] = LU(A, tol)
 % Igor Januszkiewicz
 
 U = A;
@@ -8,7 +8,11 @@ L = zeros(size(U));
 
 for k = 1:length(U) - 1
     % wybór
-    [~, i] = max(abs(U(k:end, k:end)), [], "all");
+    [maxEl, i] = max(abs(U(k:end, k:end)), [], "all");
+    if maxEl < tol
+        L = L + eye(size(L));
+        return
+    end
     [i, j] = ind2sub(size(U(k:end, k:end)), i);
     i = i + k - 1;
     j = j + k - 1;
