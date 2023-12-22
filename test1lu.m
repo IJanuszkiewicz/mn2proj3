@@ -3,7 +3,7 @@ function [] = test1lu()
 
 A = magic(4);
 As = sparse(A);
-  [L, U, P, Q] = LU(A);
+[L, U, P, Q] = LU(A);
 [Ls, Us, Ps, Qs] = lu(As);
 
 Ls = full(Ls)
