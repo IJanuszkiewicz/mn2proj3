@@ -5,13 +5,13 @@ function [eigVal, eigVec, erre, eigVals] = P2Z08_IJA_OdwMetPotegowa(A,...
 %
 % Funkcja liczy najmniejszą co do wartości bezwzględnej wartość własną
 % macierzy zespolonej odwrotną metodą potęgową. Do rozwiązywania
-% układów równań używany jest rozkład PAQ = LU (rozkład oparty na 
+% układów równań używany jest rozkład PAQ = LU (rozkład oparty na
 % eliminacji Gaussa z pełnym wyborem elementu głównego.
 %
 % Parametry wejściowe:
 %   A         - Kwadratowa macierz zespolona.
 %   accuracy  - Dokładność wyznaczenia wartości własnej. Program zakończy
-%               się kiedy wyrażenie szacujące wartość błedu wartości 
+%               się kiedy wyrażenie szacujące wartość błedu wartości
 %               własnej bedzie mniejszy niż accuracy. Domyślnie wynosi
 %               100*eps().
 %   maxIt     - Maksymalna ilość iteracji. Domyślnie wynosi 1000
@@ -31,7 +31,7 @@ function [eigVal, eigVec, erre, eigVals] = P2Z08_IJA_OdwMetPotegowa(A,...
 %               |det(A)|.
 %   eigVals   - Wektor kolejnych przybliżeń wartości własnych.
 
-% Ustawienie domyślnych wartośći
+% Ustawienie domyślnych wartości
 if nargin < 2
     accuracy = 100*eps;
 end
@@ -56,7 +56,7 @@ if det < accuracy
     eigVal = 0;
     eigVals = 0;
     erre = det;
-
+    
     % Wyznaczenie wektora należącego do jądra macierzy A
     eigVec = nullVec(L, U, P, Q, accuracy);
     eigVec = eigVec/norm(eigVec, p);
@@ -66,13 +66,17 @@ end
 x = x/norm(x, p);
 i = 2;
 erre = Inf;
-eigVals = zeros(maxIt, 1);
+if nargout > 3;
+    eigVals = zeros(maxIt, 1);
+end
 eigVals(1) = Inf;
 
 while erre >= accuracy && i <= maxIt + 1
     prev = x;
     x = LUsolve(L, U, P, Q, x);
-    eigVals(i) = 1/(prev'*x);
+    if nargout > 3
+        eigVals(i) = 1/(prev'*x);
+    end
     x = x/norm(x, p);
     erre = abs(eigVals(i) - eigVals(i - 1));
     i = i + 1;
