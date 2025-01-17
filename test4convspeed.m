@@ -2,7 +2,7 @@ function [] = test4convspeed()
 
 iters = 100;
 i = 0;
-maxiters = 1e4;
+maxiters = 1e3;
 accuracy = 10*eps;
 
 while i <= iters
@@ -20,14 +20,14 @@ while i <= iters
     diffs = abs(eigSmaller - vals);
     logdiffs = log(diffs);
     coeff = (1:length(logdiffs))'\logdiffs;
-
+    
     expectedDiv = abs(eigSmaller/eigBigger);
     actualDiv = exp(coeff);
     
     fprintf("Wartości własne: eig1 = %4f + %4fi eig2 =  %4f + %4fi\n", ...
-    real(eigSmaller), imag(eigSmaller), real(eigBigger), imag(eigBigger))
+        real(eigSmaller), imag(eigSmaller), real(eigBigger), imag(eigBigger))
     fprintf("Oczekiwany iloraz: %5f Otrzymany iloraz: %5f różnica: %e",...
         expectedDiv, actualDiv, abs(expectedDiv - actualDiv));
     fprintf("\n\n");
-
+    
 end  % function

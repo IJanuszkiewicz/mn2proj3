@@ -1,5 +1,8 @@
 function [L, U, P, Q] = LU(A, tol)
-% Igor Januszkiewicz
+% Projekt 2, zadanie 08
+% Igor Januszkiewicz, 327357
+%
+% Funkcja oblicza rozkład PAQ = LU.
 
 U = A;
 P = eye(size(A));
@@ -16,14 +19,14 @@ for k = 1:length(U) - 1
     [i, j] = ind2sub(size(U(k:end, k:end)), i);
     i = i + k - 1;
     j = j + k - 1;
-
+    
     % zamiana
     U(:, [k, j]) = U(:, [j, k]);
     Q(:, [k, j]) = Q(:, [j, k]);
     U([k, i], :) = U([i, k], :);
     P([k, i], :) = P([i, k], :);
     L([k, i], :) = L([i, k], :);
-
+    
     % odejmowanie
     for l = k + 1:length(U)
         coeff = U(l, k)/U(k, k);
