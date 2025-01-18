@@ -12,8 +12,7 @@ function [lambda, v, errEst, eigVals] = P2Z08_IJA_OdwMetPotegowa(A,...
 %   A       - Kwadratowa macierz zespolona.
 %   tol     - Dokładność wyznaczenia wartości własnej. Program zakończy
 %             się kiedy wyrażenie szacujące wartość błedu wartości
-%             własnej bedzie mniejszy niż tol. Domyślnie wynosi
-%             100*eps().
+%             własnej bedzie mniejszy niż tol. Domyślnie wynosi 100*eps().
 %   maxIter - Maksymalna ilość iteracji. Domyślnie wynosi 1000
 %   p       - Norma Schura, która będzie wykorzystywana do normowania
 %             wektora własnego. Domyślnie wynosi 2.
