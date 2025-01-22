@@ -1,12 +1,11 @@
-function [lambda, v, errEst, eigVals] = P2Z08_IJA_OdwMetPotegowa(A,...
+function [lambda, v, errEst, eigVals] = invSolve(A,...
     tol, maxIter, v0)
 % Projekt 2, zadanie 8
 % Igor Januszkiewicz 327357
 %
 % Funkcja liczy najmniejszą co do wartości bezwzględnej wartość własną
 % macierzy zespolonej odwrotną metodą potęgową. Do rozwiązywania
-% układów równań używany jest rozkład PAQ = LU (rozkład oparty na
-% eliminacji Gaussa z pełnym wyborem elementu głównego.
+% układów równań używana jest macierz odwrotna do A.
 %
 % Parametry wejściowe:
 %   A       - Kwadratowa macierz zespolona.
@@ -39,26 +38,20 @@ if nargin < 4
     v0 = complex(rand(length(A), 1), rand(length(A), 1));
 end
 
-x = v0/norm(v0);
+x = v0;
 
-% Rozkład
-[L, U, P, Q] = LU(A, tol);
+invA = inv(A);
 
-% Sprawdzenie czy macierz A nie jest osobliwa
-[isSingular, v, errEst] = checkNullSpace(U, Q, tol);
-if(isSingular)
-    lambda = 0;
-    eigVals = 0;
-    return
-end
-
+x = x/norm(x);
 i = 1;
 errEst = Inf;
-eigVals = zeros(maxIter, 1);
+if nargout > 3
+    eigVals = zeros(maxIter, 1);
+end
 
 while errEst >= tol && i <= maxIter
     prev = x;
-    x = LUsolve(L, U, P, Q, x);
+    x = invA*x; %#ok<MINV>
     lambda = 1/(prev'*x);
     errEst = abs(lambda)*norm(x - (1/lambda) * prev);
     x = x/norm(x);
@@ -67,6 +60,9 @@ while errEst >= tol && i <= maxIter
     end
     i = i + 1;
 end
-eigVals = eigVals(eigVals ~= 0);
+if nargout > 3
+    eigVals = eigVals(eigVals ~= 0);
+end
 v = x;
+
 end % function

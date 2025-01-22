@@ -1,4 +1,4 @@
-function [lambda, v, errEst, eigVals] = P2Z08_IJA_OdwMetPotegowa(A,...
+function [lambda, v, errEst, eigVals] =luAndBackslash(A,...
     tol, maxIter, v0)
 % Projekt 2, zadanie 8
 % Igor Januszkiewicz 327357
@@ -39,26 +39,35 @@ if nargin < 4
     v0 = complex(rand(length(A), 1), rand(length(A), 1));
 end
 
-x = v0/norm(v0);
+x = v0;
 
 % Rozkład
 [L, U, P, Q] = LU(A, tol);
 
 % Sprawdzenie czy macierz A nie jest osobliwa
-[isSingular, v, errEst] = checkNullSpace(U, Q, tol);
-if(isSingular)
+det = abs(prod(diag(L)*prod(diag(U))));
+if det < tol
     lambda = 0;
     eigVals = 0;
+    errEst = det;
+    
+    % Wyznaczenie wektora należącego do jądra macierzy A
+    v = nullVec(L, U, P, Q, tol);
+    v = v/norm(v);
     return
 end
 
+x = x/norm(x);
 i = 1;
 errEst = Inf;
-eigVals = zeros(maxIter, 1);
+if nargout > 3
+    eigVals = zeros(maxIter, 1);
+end
 
 while errEst >= tol && i <= maxIter
     prev = x;
-    x = LUsolve(L, U, P, Q, x);
+    y = L\(P*x);
+    x = Q*(U\y);
     lambda = 1/(prev'*x);
     errEst = abs(lambda)*norm(x - (1/lambda) * prev);
     x = x/norm(x);
@@ -67,6 +76,9 @@ while errEst >= tol && i <= maxIter
     end
     i = i + 1;
 end
-eigVals = eigVals(eigVals ~= 0);
+if nargout > 3
+    eigVals = eigVals(eigVals ~= 0);
+end
 v = x;
+
 end % function

@@ -35,7 +35,6 @@ for k = 1:length(U) - 1
     end
     U(k + 1:end, k) = 0;
 end
-
 L = L + eye(size(L));
 
 end % function

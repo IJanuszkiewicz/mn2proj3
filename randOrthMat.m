@@ -1,4 +1,9 @@
 function [A] = randOrthMat(n, tol)
+% Projekt 2, zadanie 8
+% Igor Januszkiewicz 327357
+%
+% Funkcja losuje macierz unitarną przy pomocy ortogonalizacji
+% Grama-Schmidta
 
 if nargin < 2
     tol = 500*eps;
